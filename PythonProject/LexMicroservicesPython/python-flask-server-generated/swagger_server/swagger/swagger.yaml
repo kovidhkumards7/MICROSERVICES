@@ -1,0 +1,89 @@
+openapi: 3.0.1
+info:
+  title: Swagger Validator
+  description: This is a sample server Validator server.
+  version: 1.0.0
+servers:
+- url: https://localhost:8080/v1
+tags:
+- name: User
+  description: Everything about your Users
+paths:
+  /validator/users:
+    get:
+      tags:
+      - User
+      summary: Finds all Users
+      description: Provide details of all customers
+      operationId: find_users
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Invalid status value
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+    post:
+      tags:
+      - User
+      summary: Add a new user to the validator Application
+      operationId: add_user
+      requestBody:
+        description: User object that needs to be added to the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+          content: {}
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+  /validator/validate:
+    post:
+      tags:
+      - User
+      summary: validates user data
+      operationId: validate_user
+      requestBody:
+        description: User object that needs to be added to the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: User not found
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        uid:
+          type: string
+      example:
+        firstName: firstName
+        lastName: lastName
+        uid: uid
+      xml:
+        name: User
+
